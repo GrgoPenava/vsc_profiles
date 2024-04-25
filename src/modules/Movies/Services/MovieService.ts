@@ -1,3 +1,4 @@
+//@ts-ignore
 import { AxiosResponse } from "axios";
 import { Movie } from "../../../Types/Movie";
 import ApiService from "../../../Services/ApiService";
