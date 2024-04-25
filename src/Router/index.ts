@@ -15,19 +15,19 @@ export function getRoutes(): RouteRecordRaw[] {
       path: "/login",
       name: "Login",
       component: Login,
-      meta: { requiresAuth: false },
+      meta: { requiresAuth: false, show: true },
     },
     {
       path: "/movies",
       name: "Movies",
       component: Movies,
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, show: true },
     },
     {
       path: "/users",
       name: "Users",
       component: Users,
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, show: true },
     },
     {
       path: "/:pathMatch(.*)*",
