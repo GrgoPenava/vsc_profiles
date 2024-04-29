@@ -11,7 +11,7 @@ To run the application using Docker, follow these steps:
 2. Run the Docker container with the following command:
 
     ```bash
-    docker run -it -p 8080:80 grgo/vue
+    docker run -it -p 8080:80 --name vue grgo/vue
     ```
 
 3. Access the application via the following URL:
