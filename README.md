@@ -1,12 +1,30 @@
-# SI_frontend
+## How to run with docker
 
-# SI frontend demo app
+To run the application using Docker, follow these steps:
 
-# Vue 3 + TypeScript + Vite
+1. Pull the Docker image from the Docker Hub repository:
+
+    ```bash
+    docker pull grgo/si_vue:latest
+    ```
+
+2. Run the Docker container with the following command:
+
+    ```bash
+    docker run -it -p 8080:80 grgo/vue
+    ```
+
+3. Access the application via the following URL:
+
+    ```
+    localhost:8080
+    ```
+
+## Vue 3 + TypeScript + Vite
 
 This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
 
-## Recommended Setup
+### Recommended Setup
 
 - [VS Code](https://code.visualstudio.com/) + [Vue - Official](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (previously Volar) and disable Vetur
 
