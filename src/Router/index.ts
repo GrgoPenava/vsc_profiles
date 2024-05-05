@@ -1,32 +1,25 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 //import { useRoleStore } from "../Store/roleStore";
-import Login from "../modules/Login/Pages/Login.vue";
-import Movies from "../modules/Movies/Pages/Movies.vue";
 import NotFound from "../components/NotFound.vue";
-import Users from "../modules/Users/Pages/Users.vue";
+import Home from "../modules/Home/Home.vue";
+import Login from "../modules/LoginRegister/Login.vue";
 
 export function getRoutes(): RouteRecordRaw[] {
   const routes: Array<RouteRecordRaw> = [
     {
       path: "/",
-      redirect: "/movies",
+      redirect: "/home",
+    },
+    {
+      path: "/home",
+      name: "Home",
+      component: Home,
+      meta: { requiresAuth: true, show: true },
     },
     {
       path: "/login",
       name: "Login",
       component: Login,
-      meta: { requiresAuth: false, show: true },
-    },
-    {
-      path: "/movies",
-      name: "Movies",
-      component: Movies,
-      meta: { requiresAuth: true, show: true },
-    },
-    {
-      path: "/users",
-      name: "Users",
-      component: Users,
       meta: { requiresAuth: true, show: true },
     },
     {

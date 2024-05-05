@@ -1,7 +1,8 @@
 <template>
-  <div class="h-screen flex flex-col">
+  <!-- <div class="min-h-screen flex flex-col bg-cover"> -->
+  <div class="min-h-screen flex flex-col bg-[#1B262C]">
     <Navbar />
-    <router-view></router-view>
+    <router-view class="pt-16 custom-scrollbar"></router-view>
   </div>
 </template>
 <script lang="ts">
@@ -11,4 +12,11 @@ export default defineComponent({
   components: { Navbar },
 });
 </script>
-<style scoped></style>
+<style scoped>
+.bg-cover {
+  background-image: url("./assets/background2.svg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+</style>

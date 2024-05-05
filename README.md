@@ -4,21 +4,21 @@ To run the application using Docker, follow these steps:
 
 1. Pull the Docker image from the Docker Hub repository:
 
-    ```bash
-    docker pull grgo/si_vue:latest
-    ```
+   ```bash
+   docker pull grgo/vsc_profiles:latest
+   ```
 
 2. Run the Docker container with the following command:
 
-    ```bash
-    docker run -it -p 8080:80 --name vue grgo/vue
-    ```
+   ```bash
+   docker run -it -p 8080:80 --name vsc_profiles grgo/vsc_profiles
+   ```
 
 3. Access the application via the following URL:
 
-    ```
-    localhost:8080
-    ```
+   ```
+   localhost:8080
+   ```
 
 ## Vue 3 + TypeScript + Vite
 
