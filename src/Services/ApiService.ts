@@ -1,11 +1,12 @@
 import axios, { AxiosRequestConfig } from "axios";
 
 const ApiService = {
-  init(baseURL: any, token?: string) {
+  init(baseURL: any) {
     axios.defaults.baseURL = baseURL;
-    axios.defaults.headers.common = {
-      Authorization: `Bearer ${token}`,
-    };
+    axios.defaults.withCredentials = true;
+  },
+  setAuthHeader(token: string) {
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   },
   getBaseUrl() {
     return axios.defaults.baseURL;

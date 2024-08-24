@@ -7,14 +7,16 @@
       </p>
       <div>
         <input
-          type="email"
-          placeholder="Enter your email"
+          type="input"
+          placeholder="Enter your username"
           class="w-full p-4 mt-2 mb-4 text-sm text-gray-700 placeholder-gray-400 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          v-model="loginCreds.username"
         />
         <input
           type="password"
           placeholder="Enter password"
           class="w-full p-4 mt-2 mb-4 text-sm text-gray-700 placeholder-gray-400 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          v-model="loginCreds.password"
         />
         <div class="flex items-center justify-between">
           <a href="#" class="text-xs text-blue-600 hover:underline"
@@ -23,6 +25,7 @@
         </div>
         <button
           class="w-full py-3 mt-4 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
+          @click="login"
         >
           Sign in
         </button>
@@ -42,6 +45,25 @@
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
-export default defineComponent({});
+import LoginService from "./services/LoginService";
+import { Login } from "./Types/Login";
+
+export default defineComponent({
+  data() {
+    return {
+      loginService: new LoginService(),
+      loginCreds: {} as Login,
+    };
+  },
+  created() {
+    console.log("Created");
+  },
+  methods: {
+    async login() {
+      console.log("LOGIN 1", this.loginCreds.password);
+      await this.loginService.login(this.loginCreds);
+    },
+  },
+});
 </script>
 <style scoped></style>
