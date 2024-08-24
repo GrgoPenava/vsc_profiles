@@ -14,8 +14,13 @@ const ApiService = {
   get(resource: string, config?: AxiosRequestConfig) {
     return axios.get(resource, config);
   },
-  post(resource: string, data: object, config?: AxiosRequestConfig) {
-    return axios.post(resource, data, config);
+  async post(resource: string, data: object, config?: AxiosRequestConfig) {
+    try {
+      return await axios.post(resource, data, config);
+    } catch (error) {
+      handleError(error);
+      throw error;
+    }
   },
   put(resource: string, data: object) {
     return axios.put(resource, data);
@@ -31,5 +36,17 @@ const ApiService = {
     });
   },
 };
+
+function handleError(error: any) {
+  if (axios.isAxiosError(error)) {
+    console.error("API Error:", {
+      message: error.message,
+      status: error.response?.status,
+      data: error.response?.data,
+    });
+  } else {
+    console.error("Unexpected Error:", error);
+  }
+}
 
 export default ApiService;

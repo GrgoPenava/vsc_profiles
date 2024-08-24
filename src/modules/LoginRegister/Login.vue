@@ -47,12 +47,14 @@
 import { defineComponent } from "vue";
 import LoginService from "./services/LoginService";
 import { Login } from "./Types/Login";
+import { useToast } from "vue-toast-notification";
 
 export default defineComponent({
   data() {
     return {
       loginService: new LoginService(),
       loginCreds: {} as Login,
+      toast: useToast(),
     };
   },
   created() {
@@ -60,8 +62,14 @@ export default defineComponent({
   },
   methods: {
     async login() {
-      console.log("LOGIN 1", this.loginCreds.password);
-      await this.loginService.login(this.loginCreds);
+      try {
+        const response = await this.loginService.login(this.loginCreds);
+        this.toast.success(response.message);
+        console.log("REEEE", response);
+      } catch (error: any) {
+        console.error("Login failed", error);
+        this.toast.error(error.message);
+      }
     },
   },
 });

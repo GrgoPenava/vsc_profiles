@@ -4,6 +4,6 @@ export type Login = {
 };
 
 export type LoginResponse = {
-  token: string;
+  token?: string | null;
   message: string;
 };
