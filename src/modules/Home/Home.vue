@@ -23,17 +23,17 @@
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
-import LoginService from "./../LoginRegister/services/LoginService";
+import SignService from "./../LoginRegister/services/SignService";
 
 export default defineComponent({
   data() {
     return {
-      loginService: new LoginService(),
+      signService: new SignService(),
     };
   },
   async created() {
     console.log("HOME");
-    const response = await this.loginService.test();
+    const response = await this.signService.test();
     console.log("TEST response: " + response);
   },
 });

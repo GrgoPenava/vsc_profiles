@@ -9,15 +9,17 @@ import "primevue/resources/primevue.min.css";
 import ApiService from "./Services/ApiService";
 import ToastPlugin from "vue-toast-notification";
 import { ToastProps } from "vue-toast-notification";
-import "vue-toast-notification/dist/theme-bootstrap.css";
+import "vue-toast-notification/dist/theme-default.css";
 
 const pinia = createPinia();
 const app = createApp(App);
 app.use(pinia);
-const backendUrl = "http://localhost:5000/";
-ApiService.init(backendUrl);
+console.log(import.meta.env.VITE_BACKEND_URL);
+
+ApiService.init(import.meta.env.VITE_BACKEND_URL);
 const toastOptions: ToastProps = {
   position: "top-right",
+  queue: true,
 };
 
 function renderApp() {

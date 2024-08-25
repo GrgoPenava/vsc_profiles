@@ -3,6 +3,7 @@ import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import NotFound from "../components/NotFound.vue";
 import Home from "../modules/Home/Home.vue";
 import Login from "../modules/LoginRegister/Login.vue";
+import Register from "../modules/LoginRegister/Register.vue";
 
 export function getRoutes(): RouteRecordRaw[] {
   const routes: Array<RouteRecordRaw> = [
@@ -21,6 +22,12 @@ export function getRoutes(): RouteRecordRaw[] {
       name: "Login",
       component: Login,
       meta: { requiresAuth: true, show: true },
+    },
+    {
+      path: "/register",
+      name: "Register",
+      component: Register,
+      meta: { requiresAuth: true, show: false },
     },
     {
       path: "/:pathMatch(.*)*",

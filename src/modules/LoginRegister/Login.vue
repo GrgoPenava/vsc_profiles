@@ -38,38 +38,46 @@
 
       <p class="mt-4 text-xs text-center text-gray-400">
         Don't have an account?
-        <a href="#" class="text-blue-600 hover:underline">Sign up</a>
+        <router-link to="/register" class="text-black hover:text-gray-300">
+          <a
+            href="#"
+            class="text-blue-600 hover:underline"
+            @click="openRegister"
+            >Sign up</a
+          >
+        </router-link>
       </p>
     </div>
   </div>
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
-import LoginService from "./services/LoginService";
-import { Login } from "./Types/Login";
+import SignService from "./services/SignService";
+import { Login } from "./Types/SignTypes";
 import { useToast } from "vue-toast-notification";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   data() {
     return {
-      loginService: new LoginService(),
+      signService: new SignService(),
+      router: useRouter(),
       loginCreds: {} as Login,
       toast: useToast(),
     };
   },
-  created() {
-    console.log("Created");
-  },
   methods: {
     async login() {
       try {
-        const response = await this.loginService.login(this.loginCreds);
+        const response = await this.signService.login(this.loginCreds);
         this.toast.success(response.message);
-        console.log("REEEE", response);
+        this.router.push("/home");
       } catch (error: any) {
-        console.error("Login failed", error);
         this.toast.error(error.message);
       }
+    },
+    openRegister() {
+      this.$emit("openRegister");
     },
   },
 });
