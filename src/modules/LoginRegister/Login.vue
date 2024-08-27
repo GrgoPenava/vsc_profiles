@@ -5,7 +5,7 @@
       <p class="text-sm text-center text-gray-500">
         Please enter your details.
       </p>
-      <div>
+      <form @submit.prevent="login">
         <input
           type="input"
           placeholder="Enter your username"
@@ -24,12 +24,12 @@
           >
         </div>
         <button
-          class="w-full py-3 mt-4 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
-          @click="login"
+          class="w-full py-3 mt-4 text-sm font-medium text-white bg-primary rounded-md hover:bg-primary-600"
+          type="submit"
         >
           Sign in
         </button>
-      </div>
+      </form>
       <div class="flex items-center justify-center mt-4">
         <div class="h-px bg-gray-300 grow"></div>
         <span class="px-2 text-sm text-gray-400">or</span>

@@ -5,32 +5,45 @@
       <p class="text-sm text-center text-gray-500">
         Please enter your details.
       </p>
-      <div>
-        <div v-for="(field, key) in fields" :key="key" class="mb-4">
-          <input
-            :type="field.type"
-            :placeholder="field.placeholder"
-            class="w-full p-4 mt-2 text-sm text-gray-700 placeholder-gray-400 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            v-model="registerCreds[key]"
-            :class="{ 'border-red-500': v$.$invalid && v$.$dirty }"
-          />
-          <div
-            v-if="
-              v$.registerCreds[key].$invalid && v$.registerCreds[key].$dirty
-            "
-            class="text-red-500 text-xs"
-          >
-            {{ field.error }}
-          </div>
-        </div>
+      <form @submit.prevent="register">
+        <div>
+          <div v-for="(field, key) in fields" :key="key" class="mb-4">
+            <div class="relative flex items-start">
+              <p class="text-xs text-start ml-3 text-gray-500 relative">
+                {{ field.field }}
+                <span
+                  v-if="field.required"
+                  class="absolute text-red-500 text-xs -top-0.5 -right-2"
+                  >*</span
+                >
+              </p>
+            </div>
 
-        <button
-          class="w-full py-3 mt-4 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
-          @click="register"
-        >
-          Register
-        </button>
-      </div>
+            <input
+              :type="field.type"
+              :placeholder="field.placeholder"
+              class="w-full p-4 mt-2 text-sm text-gray-700 placeholder-gray-400 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              v-model="registerCreds[key]"
+              :class="{ 'border-red-500': v$.$invalid && v$.$dirty }"
+            />
+            <div
+              v-if="
+                v$.registerCreds[key].$invalid && v$.registerCreds[key].$dirty
+              "
+              class="text-red-500 text-xs"
+            >
+              {{ field.error }}
+            </div>
+          </div>
+
+          <button
+            class="w-full py-3 mt-4 text-sm font-medium text-white bg-primary rounded-md hover:bg-primary-600"
+            type="submit"
+          >
+            Register
+          </button>
+        </div>
+      </form>
       <div class="flex items-center justify-center mt-4">
         <div class="h-px bg-gray-300 grow"></div>
         <span class="px-2 text-sm text-gray-400">or</span>
@@ -63,28 +76,38 @@ export default defineComponent({
         firstName: {
           type: "text",
           placeholder: "Enter your first name",
+          field: "First name",
           error: "First name is required.",
+          required: true,
         },
         lastName: {
           type: "text",
           placeholder: "Enter your last name",
+          field: "Last name",
           error: "Last name is required.",
+          required: true,
         },
         username: {
           type: "text",
           placeholder: "Enter your username",
+          field: "Username",
           error: "Username is required.",
+          required: true,
         },
         email: {
           type: "email",
           placeholder: "Enter your email",
+          field: "Email",
           error: "A valid email is required.",
+          required: true,
         },
         password: {
           type: "password",
           placeholder: "Enter your password",
+          field: "Password",
           error:
             "Password must contain at least one lowercase letter, one uppercase letter, one number, and be at least 6 characters long.",
+          required: true,
         },
       },
       v$: useVuelidate(),
