@@ -7,9 +7,13 @@ const ApiService = {
   },
   setAuthHeader(token: string) {
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    localStorage.setItem("Bearer", token);
   },
   getBaseUrl() {
     return axios.defaults.baseURL;
+  },
+  getAuthHeader() {
+    return axios.defaults.headers.common["Authorization"];
   },
   get(resource: string, config?: AxiosRequestConfig) {
     return axios.get(resource, config);
@@ -34,6 +38,28 @@ const ApiService = {
         "Content-Type": "application/json-patch+json",
       },
     });
+  },
+  async readTokenFromStorage() {
+    const token = localStorage.getItem("Bearer");
+    if (token && typeof token === "string") {
+      try {
+        const response = await this.verifyLogin(token);
+        if (response.status === 200) {
+          this.setAuthHeader(token);
+        } else {
+          this.removeToken();
+        }
+      } catch (error) {
+        this.removeToken();
+      }
+    }
+  },
+  async verifyLogin(token: string) {
+    return await this.post("api/v1/users/verify", { jwt: token });
+  },
+  removeToken() {
+    delete axios.defaults.headers.common["Authorization"];
+    localStorage.removeItem("Bearer");
   },
 };
 

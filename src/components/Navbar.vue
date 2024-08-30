@@ -56,6 +56,9 @@
           </button>
         </router-link>
       </div>
+      <p @click="test">AA</p>
+      <p v-if="loggedIn">11</p>
+      <p v-if="!loggedIn">2</p>
     </div>
 
     <transition name="slide">
@@ -77,22 +80,37 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
-import { useRouter } from "vue-router";
+import { defineComponent } from "vue";
+import { RouteRecordNormalized, useRouter } from "vue-router";
+import { useRoleStore } from "../Store/roleStore";
 
 export default defineComponent({
-  setup() {
-    const router = useRouter();
-    const routes = router
-      .getRoutes()
-      .filter((route) => route.name && route.meta.show);
-    const showMenu = ref(false);
-
-    function toggleMenu() {
-      showMenu.value = !showMenu.value;
-    }
-
-    return { routes, showMenu, toggleMenu };
+  data() {
+    return {
+      router: useRouter(),
+      routes: [] as RouteRecordNormalized[],
+      showMenu: false,
+      role: useRoleStore(),
+      loggedIn: false,
+    };
+  },
+  created() {
+    console.log("ZZZZZZZZZZZZZ", this.role.role);
+    this.router.getRoutes().filter((route) => route.name && route.meta.show);
+  },
+  methods: {
+    toggleMenu() {
+      this.showMenu = !this.showMenu;
+    },
+    isLoggedIn() {
+      console.log("TRIGGER", this.role.role);
+      if (this.role.role) {
+        this.loggedIn = true;
+      }
+    },
+    test() {
+      console.log("ROLE ->", this.role.role);
+    },
   },
 });
 </script>

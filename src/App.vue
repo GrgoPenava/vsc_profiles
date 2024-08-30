@@ -1,5 +1,4 @@
 <template>
-  <!-- <div class="min-h-screen flex flex-col bg-cover"> -->
   <div class="min-h-screen flex flex-col bg-[#1B262C]">
     <Navbar />
     <router-view class="pt-16 custom-scrollbar"></router-view>
@@ -8,8 +7,15 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import Navbar from "./components/Navbar.vue";
+import ApiService from "./Services/ApiService";
 export default defineComponent({
   components: { Navbar },
+  data() {
+    return {};
+  },
+  created() {
+    ApiService.readTokenFromStorage();
+  },
 });
 </script>
 <style scoped>

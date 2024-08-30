@@ -19,3 +19,10 @@ export type Register = {
 export type RegisterResponse = {
   message: string;
 };
+
+export type jwtObject = {
+  exp: number;
+  iat: number;
+  role: string;
+  username: string;
+};

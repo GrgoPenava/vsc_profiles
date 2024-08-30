@@ -52,8 +52,9 @@ export default defineComponent({
     console.log("TEST response: " + response);
   },
   methods: {
-    handlePrimaryClick() {
-      console.log("CLICKKK");
+    async handlePrimaryClick() {
+      const response = await this.signService.test();
+      console.log("CLICKKK", response);
     },
   },
 });
