@@ -1,5 +1,6 @@
 <template>
-  <div class="min-h-screen flex flex-col bg-[#1B262C]">
+  <InitLoading v-if="isLoading" />
+  <div v-else class="min-h-screen flex flex-col bg-[#1B262C]">
     <Navbar />
     <router-view class="pt-16 custom-scrollbar"></router-view>
   </div>
@@ -8,13 +9,23 @@
 import { defineComponent } from "vue";
 import Navbar from "./components/Navbar.vue";
 import ApiService from "./Services/ApiService";
+import InitLoading from "./components/InitLoading.vue";
 export default defineComponent({
-  components: { Navbar },
+  components: { Navbar, InitLoading },
   data() {
-    return {};
+    return {
+      isLoading: false,
+    };
   },
-  created() {
-    ApiService.readTokenFromStorage();
+  async created() {
+    try {
+      this.isLoading = true;
+      await ApiService.readTokenFromStorage();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      this.isLoading = false;
+    }
   },
 });
 </script>

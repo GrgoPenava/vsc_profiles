@@ -82,7 +82,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { RouteRecordNormalized, useRouter } from "vue-router";
-import { useRoleStore } from "../Store/roleStore";
+import ApiService from "../Services/ApiService";
 
 export default defineComponent({
   data() {
@@ -90,26 +90,21 @@ export default defineComponent({
       router: useRouter(),
       routes: [] as RouteRecordNormalized[],
       showMenu: false,
-      role: useRoleStore(),
       loggedIn: false,
     };
   },
   created() {
-    console.log("ZZZZZZZZZZZZZ", this.role.role);
     this.router.getRoutes().filter((route) => route.name && route.meta.show);
+  },
+  async mounted() {
+    this.loggedIn = await ApiService.readTokenFromStorage();
   },
   methods: {
     toggleMenu() {
       this.showMenu = !this.showMenu;
     },
-    isLoggedIn() {
-      console.log("TRIGGER", this.role.role);
-      if (this.role.role) {
-        this.loggedIn = true;
-      }
-    },
     test() {
-      console.log("ROLE ->", this.role.role);
+      console.log("TEST ->", this.loggedIn);
     },
   },
 });

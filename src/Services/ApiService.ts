@@ -39,13 +39,14 @@ const ApiService = {
       },
     });
   },
-  async readTokenFromStorage() {
+  async readTokenFromStorage(): Promise<boolean> {
     const token = localStorage.getItem("Bearer");
     if (token && typeof token === "string") {
       try {
         const response = await this.verifyLogin(token);
         if (response.status === 200) {
           this.setAuthHeader(token);
+          return true;
         } else {
           this.removeToken();
         }
@@ -53,6 +54,7 @@ const ApiService = {
         this.removeToken();
       }
     }
+    return false;
   },
   async verifyLogin(token: string) {
     return await this.post("api/v1/users/verify", { jwt: token });
