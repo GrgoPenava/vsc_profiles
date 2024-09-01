@@ -14,7 +14,6 @@ import "vue-toast-notification/dist/theme-default.css";
 const pinia = createPinia();
 const app = createApp(App);
 app.use(pinia);
-console.log(import.meta.env.VITE_BACKEND_URL);
 
 ApiService.init(import.meta.env.VITE_BACKEND_URL);
 const toastOptions: ToastProps = {

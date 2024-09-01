@@ -34,31 +34,34 @@
         </router-link>
       </div>
 
-      <div class="flex items-center">
+      <div class="flex items-center" v-if="!loggedIn">
         <router-link to="/login">
           <button
             type="button"
-            data-twe-ripple-init
-            data-twe-ripple-color="light"
             class="me-3 inline-block rounded px-2 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary hover:text-primary-600 focus:text-primary-600 focus:outline-none focus:ring-0 active:text-primary-700 dark:text-secondary-600 dark:hover:text-secondary-500 dark:focus:text-secondary-500 dark:active:text-secondary-500"
           >
-            Login
+            Sign in
           </button>
         </router-link>
         <router-link to="/register">
           <button
             type="button"
-            data-twe-ripple-init
-            data-twe-ripple-color="light"
             class="me-3 inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
           >
             Sign up for free
           </button>
         </router-link>
       </div>
-      <p @click="test">AA</p>
-      <p v-if="loggedIn">11</p>
-      <p v-if="!loggedIn">2</p>
+      <div v-else @click="logout">
+        <button
+          type="button"
+          class="me-3 inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
+        >
+          Logout
+        </button>
+      </div>
+      <p v-if="loggedIn">True</p>
+      <p v-if="!loggedIn">False</p>
     </div>
 
     <transition name="slide">
@@ -82,7 +85,8 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { RouteRecordNormalized, useRouter } from "vue-router";
-import ApiService from "../Services/ApiService";
+import { useAuthStore } from "../Store/authStore";
+import SignService from "../modules/LoginRegister/services/SignService";
 
 export default defineComponent({
   data() {
@@ -91,20 +95,26 @@ export default defineComponent({
       routes: [] as RouteRecordNormalized[],
       showMenu: false,
       loggedIn: false,
+      authStore: useAuthStore(),
+      signService: new SignService(),
     };
   },
-  created() {
-    this.router.getRoutes().filter((route) => route.name && route.meta.show);
+  watch: {
+    "authStore.loggedIn"(newVal) {
+      this.loggedIn = newVal;
+    },
   },
-  async mounted() {
-    this.loggedIn = await ApiService.readTokenFromStorage();
+  created() {
+    this.loggedIn = this.authStore.loggedIn;
+    this.router.getRoutes().filter((route) => route.name && route.meta.show);
   },
   methods: {
     toggleMenu() {
       this.showMenu = !this.showMenu;
     },
-    test() {
-      console.log("TEST ->", this.loggedIn);
+
+    async logout() {
+      await this.signService.logout();
     },
   },
 });

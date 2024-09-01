@@ -10,7 +10,7 @@
     <div class="h-full text-2xl my-10">abc</div>
     <div class="h-full text-2xl my-10">abc</div>
     <div class="h-full text-2xl my-10">abc</div>
-    <Button type="primary" @onClick="handlePrimaryClick">Primary</Button>
+    <Button type="primary" @onClick="test">Primary</Button>
     <Button type="secondary" @click="handlePrimaryClick">Secondary</Button>
     <Button
       type="custom"
@@ -46,15 +46,9 @@ export default defineComponent({
       signService: new SignService(),
     };
   },
-  async created() {
-    console.log("HOME");
-    const response = await this.signService.test();
-    console.log("TEST response: " + response);
-  },
   methods: {
-    async handlePrimaryClick() {
-      const response = await this.signService.test();
-      console.log("CLICKKK", response);
+    async test() {
+      await this.signService.test();
     },
   },
 });

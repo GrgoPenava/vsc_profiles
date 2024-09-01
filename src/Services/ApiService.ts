@@ -1,6 +1,10 @@
 import axios, { AxiosRequestConfig } from "axios";
+import { useAuthStore } from "../Store/authStore";
+import { jwtObject } from "../modules/LoginRegister/Types/SignTypes";
+import { jwtDecode } from "jwt-decode";
 
 const ApiService = {
+  currentUser: null as jwtObject | null,
   init(baseURL: any) {
     axios.defaults.baseURL = baseURL;
     axios.defaults.withCredentials = true;
@@ -8,6 +12,9 @@ const ApiService = {
   setAuthHeader(token: string) {
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     localStorage.setItem("Bearer", token);
+    useAuthStore().isLoggedIn(true);
+    console.log("POSTAVKA", useAuthStore().loggedIn);
+    this.setCurrentUser(token);
   },
   getBaseUrl() {
     return axios.defaults.baseURL;
@@ -39,6 +46,19 @@ const ApiService = {
       },
     });
   },
+
+  setCurrentUser(user: string) {
+    this.currentUser = readJwt(user);
+  },
+
+  removeCurrentUser() {
+    this.currentUser = null;
+  },
+
+  getCurrentUser(): jwtObject | null {
+    return this.currentUser;
+  },
+
   async readTokenFromStorage(): Promise<boolean> {
     const token = localStorage.getItem("Bearer");
     if (token && typeof token === "string") {
@@ -62,6 +82,8 @@ const ApiService = {
   removeToken() {
     delete axios.defaults.headers.common["Authorization"];
     localStorage.removeItem("Bearer");
+    useAuthStore().isLoggedIn(false);
+    this.removeCurrentUser();
   },
 };
 
@@ -75,6 +97,10 @@ function handleError(error: any) {
   } else {
     console.error("Unexpected Error:", error);
   }
+}
+function readJwt(token: string): jwtObject {
+  const decodedJwt: jwtObject = jwtDecode(token);
+  return decodedJwt;
 }
 
 export default ApiService;
