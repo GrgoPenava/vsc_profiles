@@ -13,7 +13,6 @@ const ApiService = {
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     localStorage.setItem("Bearer", token);
     useAuthStore().isLoggedIn(true);
-    console.log("POSTAVKA", useAuthStore().loggedIn);
     this.setCurrentUser(token);
   },
   getBaseUrl() {

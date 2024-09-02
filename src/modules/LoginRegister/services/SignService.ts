@@ -10,7 +10,6 @@ export default class SignService {
       const response = await ApiService.post(`api/v1/users/login`, creds);
       if (response.status === 200) {
         ApiService.setAuthHeader(response.data.token);
-        console.log("RESS", response.data.token);
       }
       return response.data;
     } catch (error: AxiosResponse | any) {
@@ -29,8 +28,6 @@ export default class SignService {
 
   async test(): Promise<any> {
     const us = ApiService.getCurrentUser();
-    console.log("USSSSSS -", us);
-
     return us;
   }
 

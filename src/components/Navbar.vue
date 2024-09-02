@@ -52,16 +52,9 @@
           </button>
         </router-link>
       </div>
-      <div v-else @click="logout">
-        <button
-          type="button"
-          class="me-3 inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
-        >
-          Logout
-        </button>
+      <div v-if="loggedIn">
+        <ProfileNavbar @logout="logout" @navigate="handleNavigation" />
       </div>
-      <p v-if="loggedIn">True</p>
-      <p v-if="!loggedIn">False</p>
     </div>
 
     <transition name="slide">
@@ -87,16 +80,21 @@ import { defineComponent } from "vue";
 import { RouteRecordNormalized, useRouter } from "vue-router";
 import { useAuthStore } from "../Store/authStore";
 import SignService from "../modules/LoginRegister/services/SignService";
+import { useToast } from "vue-toast-notification";
+import ProfileNavbar from "./ProfileNavbar.vue";
 
 export default defineComponent({
+  components: { ProfileNavbar },
   data() {
     return {
       router: useRouter(),
       routes: [] as RouteRecordNormalized[],
       showMenu: false,
+      showDropdown: false,
       loggedIn: false,
       authStore: useAuthStore(),
       signService: new SignService(),
+      toast: useToast(),
     };
   },
   watch: {
@@ -112,9 +110,22 @@ export default defineComponent({
     toggleMenu() {
       this.showMenu = !this.showMenu;
     },
+    toggleDropdown() {
+      this.showDropdown = !this.showDropdown;
+    },
 
     async logout() {
-      await this.signService.logout();
+      try {
+        await this.signService.logout();
+        this.showDropdown = false;
+      } catch (error: any) {
+        this.toast.error(error);
+        console.log(error);
+      }
+    },
+
+    handleNavigation(routeName: string) {
+      this.router.push({ name: routeName });
     },
   },
 });
