@@ -8,7 +8,36 @@ const ApiService = {
   init(baseURL: any) {
     axios.defaults.baseURL = baseURL;
     axios.defaults.withCredentials = true;
+
+    axios.interceptors.response.use(
+      (response) => response,
+      async (error) => {
+        const originalRequest = error.config;
+
+        if (error.response?.status === 401 && !originalRequest._retry) {
+          originalRequest._retry = true;
+          try {
+            const { data } = await this.refreshAccessToken();
+            console.log("data ->", data);
+
+            this.setAuthHeader(data.accessToken);
+            originalRequest.headers[
+              "Authorization"
+            ] = `Bearer ${data.accessToken}`;
+            console.log(originalRequest);
+
+            return axios(originalRequest);
+          } catch (refreshError) {
+            this.removeToken();
+            useAuthStore().isLoggedIn(false);
+            throw refreshError;
+          }
+        }
+        return Promise.reject(error);
+      }
+    );
   },
+
   setAuthHeader(token: string) {
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     localStorage.setItem("Bearer", token);
@@ -56,6 +85,10 @@ const ApiService = {
 
   getCurrentUser(): jwtObject | null {
     return this.currentUser;
+  },
+
+  async refreshAccessToken() {
+    return await axios.post(`/api/v1/users/refresh-token`);
   },
 
   async readTokenFromStorage(): Promise<boolean> {

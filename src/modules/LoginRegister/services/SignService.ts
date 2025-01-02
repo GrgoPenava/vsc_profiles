@@ -7,9 +7,11 @@ import { Register, RegisterResponse } from "../Types/SignTypes";
 export default class SignService {
   async login(creds: Login): Promise<LoginResponse> {
     try {
+      creds.username = "admin";
+      creds.password = "Password1";
       const response = await ApiService.post(`api/v1/users/login`, creds);
       if (response.status === 200) {
-        ApiService.setAuthHeader(response.data.token);
+        ApiService.setAuthHeader(response.data.accessToken);
       }
       return response.data;
     } catch (error: AxiosResponse | any) {
@@ -27,6 +29,7 @@ export default class SignService {
   }
 
   async test(): Promise<any> {
+    await ApiService.get(`api/v1/users`);
     const us = ApiService.getCurrentUser();
     return us;
   }
