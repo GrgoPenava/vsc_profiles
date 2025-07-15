@@ -2,16 +2,15 @@ import { defineStore } from "pinia";
 
 export const useRoleStore = defineStore("roleStore", {
   state: () => {
-    return { role: [] as string[] };
+    return { role: null as string | null };
   },
 
   actions: {
     setRole(role: string) {
-      if (this.role.indexOf(role) !== -1) {
-        return;
-      }
-
-      this.role.push(role);
+      this.role = role;
+    },
+    removeRole() {
+      this.role = null;
     },
   },
 });
